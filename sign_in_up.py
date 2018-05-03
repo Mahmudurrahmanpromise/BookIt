@@ -31,6 +31,25 @@ def signUp():
 def home():
     return render_template("home_login.html")
 
+@app.route("/checker", methods=["POST"])
+def checker():
+        admin_email = str(request.form["email"])
+        admin_password = str(request.form["password"])
+
+        cursor = conn.cursor()
+        cursor.execute("SELECT password FROM admin_login WHERE email LIKE %s", (admin_email,))
+        fetch_password = cursor.fetchone()
+        print(fetch_password[0])
+
+        y = fetch_password[0]
+        print(y)
+
+        if (admin_password == y):
+
+            return redirect(url_for("posts"))
+        else:
+
+            return redirect(url_for("loginerror"))
 
 @app.route("/checkuser", methods=["POST"])
 def checkuser():
@@ -40,14 +59,48 @@ def checkuser():
     cursor = conn.cursor()
     cursor.execute("SELECT password FROM user WHERE email LIKE %s", (user_email,))
     user_password = cursor.fetchone()
+    print(user_password[0])
     x = user_password[0]
+
 
     if (password == x) :
 
-         return redirect(url_for("posts"))
+         return redirect(url_for("user_posts"))
     else :
 
         return redirect(url_for("loginerror"))
+
+@app.route("/approve/<string:name>/")
+def approve(name=None):
+    cursor = conn.cursor()
+    name=str(name)
+    cursor.execute("UPDATE post SET APPROVED =1 WHERE book_name = \""+name+"\"")
+    books = cursor.fetchall()
+
+
+    cursor.close()
+    conn.commit()
+
+    return str(books)
+
+
+
+@app.route("/user_posts")
+def user_posts():
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM post")
+    books = cursor.fetchall()
+
+
+    cursor.close()
+    conn.commit()
+
+
+
+    return render_template("user_posts.html",**locals())
+
+
+
     
 
 @app.route("/post-entry/",methods=["POST"])
@@ -78,7 +131,7 @@ def post_entry():
         cursor = conn.cursor()
 
         cursor.execute("INSERT INTO post (user_email,book_name,writer_name,category,book_image_path)VALUES(%s,%s,%s,%s,%s)",
-                (user_email, book_name, writer_name, category, book_image_path))
+                (user_email, book_name, writer_name,category, book_image_path))
 
         ###################
 
@@ -122,7 +175,9 @@ def posts():
 def loginerror():
         return render_template("loginerror.html")
 
-
+@app.route("/logout")
+def logout():
+    return render_template("logout.html")
 
 
 @app.route("/dashboard",methods=['GET','POST'])
