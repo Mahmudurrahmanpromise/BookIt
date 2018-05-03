@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 import MySQLdb
+import os
 
 app = Flask(__name__)
 
@@ -52,24 +53,68 @@ def checkuser():
 @app.route("/post-entry/",methods=["POST"])
 def post_entry():
     if request.method=='POST':
-        data = request.form.to_dict()
-        print(data['bookname'])
-        print(data['author'])
-        print(data['location'])
+        #data = request.form.to_dict()
+        ################
 
+        user_email = "Promise@gmail.com"
+        book_name = str(request.form["bookname"])
+        writer_name = str(request.form["author"])
+        category = str(request.form["category"])
+        book_photo = request.files["book_image"]
+        for_sell_rent = str(request.form["for_sell_rent"])
+        price = request.form["price"]
+        book_photo.filename = user_email + book_name + writer_name + ".png"  # some custom file name that you want
+
+        ################
+
+        UPLOAD_FOLDER = 'static/book_images'
+        ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
+        app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+        photo_name = book_photo.filename
+        book_photo.save(os.path.join(app.config['UPLOAD_FOLDER'], photo_name))
+
+        book_image_path = "/static/book_images/" + photo_name
         cursor = conn.cursor()
 
-        cursor.execute("INSERT INTO post (name,author,location)VALUES(%s,%s,%s)",
-                       (data['bookname'],data['author'],data['location']))
+        cursor.execute("INSERT INTO post (user_email,book_name,writer_name,category,book_image_path)VALUES(%s,%s,%s,%s,%s)",
+                (user_email, book_name, writer_name, category, book_image_path))
+
+        ###################
+
+
+        #print(data['bookname'])
+        #print(data['author'])
+
+        #UPLOAD_FOLDER = 'static/book_images'
+        ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
+        #app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+        #photo_name = (data['book_image'].filename)
+        #data['book_image'].save(os.path.join(app.config['UPLOAD_FOLDER'], photo_name))
+
+        #book_image_path = "/static/book_images/" + photo_name
+
+        #cursor = conn.cursor()
+
+        #cursor.execute("INSERT INTO post (book_name,writer_name,rent_or_sell,book_image_path,price)VALUES(%s,%s)",
+                       #(data['bookname'],data['author'],data['for_sell_rent'],book_image_path,data['price']))
         conn.commit()
-        return redirect("/")
+
+        return redirect(url_for("posts"))
 
 
-@app.route("/posts/")
+@app.route("/posts")
 def posts():
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM post")
     books = cursor.fetchall()
+
+
+    cursor.close()
+    conn.commit()
+
+
 
     return render_template("posts.html",**locals())
 
@@ -77,12 +122,36 @@ def posts():
 def loginerror():
         return render_template("loginerror.html")
 
-@app.route("/userprofile")
-def userprofile():
-        return render_template("posts.html")
 
 
 
+@app.route("/dashboard",methods=['GET','POST'])
+def dashboard():
+
+    if request.method == 'POST':
+        bookname = str(request.form["book_name"])
+
+        APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+        target = os.path.join(APP_ROOT, 'static/book_pdf/')
+        print(target)
+        print(request.files.getlist("file"))
+        for upload in request.files.getlist("file"):
+            print(upload)
+            print("{} is the file name".format(upload.filename))
+            filename = upload.filename
+            destination = "/".join([target, filename])
+
+            upload.save(destination)
+            pdf_path = "/static/book_pdf/" + filename
+
+            cursor = conn.cursor()
+
+            cursor.execute("INSERT INTO book_db (name,link)VALUES(%s,%s)",
+                       (bookname,pdf_path))
+            conn.commit()
+
+
+    return render_template("dashboard.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
