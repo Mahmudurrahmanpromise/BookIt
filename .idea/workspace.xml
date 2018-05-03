@@ -12,13 +12,13 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/login_page$sign_in_up.coverage" NAME="sign_in_up Coverage Results" MODIFIED="1525350463565" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/login_page$new__1_.coverage" NAME="new (1) Coverage Results" MODIFIED="1524509577884" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../sdp project" />
-    <SUITE FILE_PATH="coverage/login_page$baal.coverage" NAME="baal Coverage Results" MODIFIED="1524510769606" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/login_page$new.coverage" NAME="new Coverage Results" MODIFIED="1524511742663" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/login_page$backup.coverage" NAME="backup Coverage Results" MODIFIED="1524511677821" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/login_page$baal.coverage" NAME="baal Coverage Results" MODIFIED="1524510769606" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/login_page$login_page.coverage" NAME="login_page Coverage Results" MODIFIED="1524510295539" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/login_page$sign_in_up.coverage" NAME="sign_in_up Coverage Results" MODIFIED="1525350463565" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/BookIt$for_profile.coverage" NAME="for_profile Coverage Results" MODIFIED="1525353510286" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/login_page$new__1_.coverage" NAME="new (1) Coverage Results" MODIFIED="1524509577884" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../sdp project" />
   </component>
   <component name="DatabaseView">
     <option name="SHOW_INTERMEDIATE" value="true" />
@@ -38,17 +38,28 @@
         <entry file="file://$PROJECT_DIR$/for_profile.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="198">
-              <caret line="11" column="0" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+              <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
               <folding>
                 <element signature="e#0#68#0" expanded="true" />
-                <marker date="1525348371218" expanded="true" signature="540:605" ph="SELECT usern... user" />
-                <marker date="1525348371218" expanded="true" signature="1763:1866" ph="INSERT INTO rent_book... " />
-                <marker date="1525348371218" expanded="true" signature="2472:2575" ph="INSERT INTO sell_book... " />
-                <marker date="1525348371218" expanded="true" signature="3277:3349" ph="UPDATE user... " />
-                <marker date="1525348371218" expanded="true" signature="3475:3547" ph="UPDATE user... " />
-                <marker date="1525348371218" expanded="true" signature="3674:3746" ph="UPDATE user... " />
-                <marker date="1525348371218" expanded="true" signature="4247:4331" ph="SELECT book_... sell_book" />
-                <marker date="1525348371218" expanded="true" signature="4400:4484" ph="SELECT book_... rent_book" />
+                <marker date="1525355667257" expanded="true" signature="540:605" ph="SELECT usern... user" />
+                <marker date="1525355667257" expanded="true" signature="1763:1866" ph="INSERT INTO rent_book... " />
+                <marker date="1525355667257" expanded="true" signature="2472:2575" ph="INSERT INTO sell_book... " />
+                <marker date="1525355667257" expanded="true" signature="3277:3349" ph="UPDATE user... " />
+                <marker date="1525355667257" expanded="true" signature="3475:3547" ph="UPDATE user... " />
+                <marker date="1525355667257" expanded="true" signature="3674:3746" ph="UPDATE user... " />
+                <marker date="1525355667257" expanded="true" signature="4247:4331" ph="SELECT book_... sell_book" />
+                <marker date="1525355667257" expanded="true" signature="4400:4484" ph="SELECT book_... rent_book" />
+                <marker date="1525355667257" expanded="true" signature="4760:4828" ph="SELECT book_... rent_book" />
+                <marker date="1525355667257" expanded="true" signature="5142:5234" ph="SELECT book_... rent_book" />
+                <marker date="1525355667257" expanded="true" signature="5368:5462" ph="SELECT book_... rent_book" />
+                <marker date="1525355667257" expanded="true" signature="5968:6059" ph="SELECT book_... rent_book" />
+                <marker date="1525355667257" expanded="true" signature="6396:6536" ph="SELECT user_... user" />
+                <marker date="1525355667257" expanded="true" signature="6598:6646" ph="SELECT * FRO... rent_book" />
+                <marker date="1525355667257" expanded="true" signature="6988:7067" ph="SELECT book_... sell_book" />
+                <marker date="1525355667257" expanded="true" signature="7354:7448" ph="SELECT book_... rent_book" />
+                <marker date="1525355667257" expanded="true" signature="7890:7981" ph="SELECT book_... sell_book" />
+                <marker date="1525355667257" expanded="true" signature="8308:8448" ph="SELECT user_... user" />
+                <marker date="1525355667257" expanded="true" signature="8510:8558" ph="SELECT * FRO... sell_book" />
               </folding>
             </state>
           </provider>
@@ -118,7 +129,7 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="49" />
     <option name="y" value="87" />
     <option name="width" value="1346" />
@@ -140,19 +151,24 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
-              <item name="BookIt" type="b2602c69:ProjectViewProjectNode" />
-              <item name="BookIt" type="462c0819:PsiDirectoryNode" />
+              <item name="login_page" type="b2602c69:ProjectViewProjectNode" />
+              <item name="login_page" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="login_page" type="b2602c69:ProjectViewProjectNode" />
+              <item name="login_page" type="462c0819:PsiDirectoryNode" />
+              <item name="templates" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -225,7 +241,7 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="$PROJECT_DIR$/../../BookIt/venv/bin/python" />
+      <option name="SDK_HOME" value="$USER_HOME$/BookIt/venv/bin/python" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -330,15 +346,15 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="49" y="87" width="1325" height="780" extended-state="7" />
+    <frame x="49" y="87" width="1303" height="780" extended-state="6" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26127526" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26127526" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2513704" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25577688" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32954547" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="SciView" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -651,17 +667,28 @@
     <entry file="file://$PROJECT_DIR$/for_profile.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="198">
-          <caret line="11" column="0" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+          <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
           <folding>
             <element signature="e#0#68#0" expanded="true" />
-            <marker date="1525348371218" expanded="true" signature="540:605" ph="SELECT usern... user" />
-            <marker date="1525348371218" expanded="true" signature="1763:1866" ph="INSERT INTO rent_book... " />
-            <marker date="1525348371218" expanded="true" signature="2472:2575" ph="INSERT INTO sell_book... " />
-            <marker date="1525348371218" expanded="true" signature="3277:3349" ph="UPDATE user... " />
-            <marker date="1525348371218" expanded="true" signature="3475:3547" ph="UPDATE user... " />
-            <marker date="1525348371218" expanded="true" signature="3674:3746" ph="UPDATE user... " />
-            <marker date="1525348371218" expanded="true" signature="4247:4331" ph="SELECT book_... sell_book" />
-            <marker date="1525348371218" expanded="true" signature="4400:4484" ph="SELECT book_... rent_book" />
+            <marker date="1525355667257" expanded="true" signature="540:605" ph="SELECT usern... user" />
+            <marker date="1525355667257" expanded="true" signature="1763:1866" ph="INSERT INTO rent_book... " />
+            <marker date="1525355667257" expanded="true" signature="2472:2575" ph="INSERT INTO sell_book... " />
+            <marker date="1525355667257" expanded="true" signature="3277:3349" ph="UPDATE user... " />
+            <marker date="1525355667257" expanded="true" signature="3475:3547" ph="UPDATE user... " />
+            <marker date="1525355667257" expanded="true" signature="3674:3746" ph="UPDATE user... " />
+            <marker date="1525355667257" expanded="true" signature="4247:4331" ph="SELECT book_... sell_book" />
+            <marker date="1525355667257" expanded="true" signature="4400:4484" ph="SELECT book_... rent_book" />
+            <marker date="1525355667257" expanded="true" signature="4760:4828" ph="SELECT book_... rent_book" />
+            <marker date="1525355667257" expanded="true" signature="5142:5234" ph="SELECT book_... rent_book" />
+            <marker date="1525355667257" expanded="true" signature="5368:5462" ph="SELECT book_... rent_book" />
+            <marker date="1525355667257" expanded="true" signature="5968:6059" ph="SELECT book_... rent_book" />
+            <marker date="1525355667257" expanded="true" signature="6396:6536" ph="SELECT user_... user" />
+            <marker date="1525355667257" expanded="true" signature="6598:6646" ph="SELECT * FRO... rent_book" />
+            <marker date="1525355667257" expanded="true" signature="6988:7067" ph="SELECT book_... sell_book" />
+            <marker date="1525355667257" expanded="true" signature="7354:7448" ph="SELECT book_... rent_book" />
+            <marker date="1525355667257" expanded="true" signature="7890:7981" ph="SELECT book_... sell_book" />
+            <marker date="1525355667257" expanded="true" signature="8308:8448" ph="SELECT user_... user" />
+            <marker date="1525355667257" expanded="true" signature="8510:8558" ph="SELECT * FRO... sell_book" />
           </folding>
         </state>
       </provider>
