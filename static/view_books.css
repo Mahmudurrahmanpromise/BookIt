@@ -12,6 +12,7 @@ body {
 	line-height: 1.5em;
 	font-family: Verdana, Arial, san-serif;
 	font-size: 18px;
+
 	color: #ffffff;
 	background: #4b4743;
 }
@@ -71,9 +72,7 @@ img {
 
 #templatemo_container{
 	width:	100%;
-	margin: 0 auto;
-	padding: 0 0px;
-    background-color: #4d2600;
+	background-color: #4d2600;
 
 }
 
@@ -273,7 +272,7 @@ img {
 	padding: 0;
 	margin: 0 0 20px 0;
 	font-size: 18px;
-	color: #85391f;
+		color: #85391f;
 }
 
 #templatemo_content_right ul {
@@ -308,11 +307,13 @@ img {
 
 .templatemo_product_box .product_info {
 	float: left;
-	width: 180px;
+	width: 60%;
 }
 
 .product_info p {
 	margin-bottom: 15px;
+	font-weight: bold;
+	color: #0c0c0c;
 }
 
 /* end of content */
@@ -320,7 +321,7 @@ img {
 /* footer */
 #templatemo_footer {
 	clear: both;
-	width: 960px;
+	width: 100%;
 	padding: 20px 0px 20px 0;
 	text-align: center;
 	border-top: 1px solid #25211e;

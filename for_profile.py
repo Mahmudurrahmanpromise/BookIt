@@ -113,24 +113,37 @@ def post_entry():
         category = str(request.form["category"])
         book_photo = request.files["book_image"]
         for_sell_rent = str(request.form["for_sell_rent"])
+        price = str(request.form["book_price"])
+
+        for_what = ""
+
+        if for_sell_rent == "Add book for give rent":
+            for_what = "For Rent"
+
+        else:
+            for_what = "For Sell"
+
         #price = request.form["price"]
-        book_photo.filename = user_email + book_name + writer_name + ".png"  # some custom file name that you want
 
-        ################
+        if book_photo:
 
-        UPLOAD_FOLDER = 'static/book_images'
-        ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
-        app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+            book_photo.filename = user_email + book_name + writer_name + ".png"  # some custom file name that you want
 
-        photo_name = book_photo.filename
-        book_photo.save(os.path.join(app.config['UPLOAD_FOLDER'], photo_name))
+            ################
 
-        book_image_path = "/static/book_images/" + photo_name
+            UPLOAD_FOLDER = 'static/book_images'
+            ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
+            app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+            photo_name = book_photo.filename
+            book_photo.save(os.path.join(app.config['UPLOAD_FOLDER'], photo_name))
+
+            book_image_path = "/static/book_images/" + photo_name
         cursor = conn.cursor()
 
         cursor.execute(
-            "INSERT INTO post (user_email,book_name,writer_name,category,book_image_path)VALUES(%s,%s,%s,%s,%s)",
-            (user_email, book_name, writer_name, category, book_image_path))
+            "INSERT INTO post (user_email,book_name,writer_name,category,book_image_path,rent_or_sell,price)VALUES(%s,%s,%s,%s,%s,%s,%s)",
+            (user_email, book_name, writer_name, category, book_image_path,for_what,price))
 
         ###################
         ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
@@ -158,6 +171,7 @@ def loginerror():
 
 @app.route("/logout")
 def logout():
+    session.pop('user_email', None)
     return render_template("logout.html")
 
 
@@ -325,6 +339,8 @@ def user_profile():
 
             if for_sell_rent=="Add book for give rent" :
 
+                for_what = "For sell"
+
                 UPLOAD_FOLDER = 'static/rent_book_photo'
                 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
                 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -338,8 +354,12 @@ def user_profile():
                 cursor.execute("INSERT INTO rent_book (user_email,book_name,writer_name,category,book_image_path,rent_price)VALUES(%s,%s,%s,%s,%s,%s)",
                                          (user_email, book_name, writer_name, category,book_image_path,price))
 
+                cursor.execute(
+                    "INSERT INTO post (user_email,book_name,writer_name,category,book_image_path,rent_or_sell,price)VALUES(%s,%s,%s,%s,%s,%s,%s)",
+                    (user_email, book_name, writer_name, category, book_image_path, for_what,price))
 
             if for_sell_rent=="Add book for sell" :
+                for_what = "For rent"
 
                 UPLOAD_FOLDER = 'static/sell_book_photo'
                 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
@@ -354,7 +374,9 @@ def user_profile():
                 cursor.execute("INSERT INTO sell_book (user_email,book_name,writer_name,category,book_image_path,sell_price)VALUES(%s,%s,%s,%s,%s,%s)",
                                          (user_email, book_name, writer_name, category,book_image_path,price))
 
-
+                cursor.execute(
+                    "INSERT INTO post (user_email,book_name,writer_name,category,book_image_path,rent_or_sell,price)VALUES(%s,%s,%s,%s,%s,%s,%s)",
+                    (user_email, book_name, writer_name, category, book_image_path, for_what, price))
 
         cursor.close()
         conn.commit()
@@ -476,10 +498,10 @@ def view_books():
 
 
     cursor = conn.cursor()
-    cursor.execute("SELECT book_name,writer_name,book_image_path FROM sell_book WHERE user_email LIKE %s", (myname,))
+    cursor.execute("SELECT book_name,writer_name,book_image_path,sell_price,category FROM sell_book WHERE user_email LIKE %s", (myname,))
     sell_info = cursor.fetchall()
 
-    cursor.execute("SELECT book_name,writer_name,book_image_path FROM rent_book WHERE user_email LIKE %s", (myname,))
+    cursor.execute("SELECT book_name,writer_name,book_image_path,rent_price ,category FROM rent_book WHERE user_email LIKE %s", (myname,))
     rent_info = cursor.fetchall()
 
 

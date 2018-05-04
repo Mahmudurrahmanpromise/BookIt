@@ -391,7 +391,7 @@ img {
 /* footer */
 #templatemo_footer {
 	clear: both;
-	width: 960px;
+	width: 100%;
 	padding: 20px 0px 20px 0;
 	text-align: center;
 	border-top: 1px solid #25211e;
