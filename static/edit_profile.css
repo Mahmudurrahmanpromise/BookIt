@@ -38,14 +38,66 @@ input, button {
   height: 100%;
   margin: 0 auto;
   background: #FFFFF0;
+  float: right;
 
 }
 
-.content_center{
+.mycont .cont_edit_profile{
+
+    width: 60%;
+
+    height: 100%;
+    background: #FFFFF0;
+    float: left;
+
+}
+
+
+.mycont .content_profile_img{
+
+    width: 35%;
+    height: 100%;
+    background: #FFFFF0;
+    float: right;
+
 
 
 
 }
+
+.content_profile_img .img_container{
+
+  height: 190px;
+  width: 210px;
+  border: 5px solid #000000;
+
+
+}
+
+
+.content_profile_img .dp_image {
+
+    height: 100%;
+    width: 100%;
+
+    float: right;
+
+    display: block;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    text-align: center;
+    border: 5px solid #FFF;
+
+}
+
+.content_profile_img img {
+	margin: 0px;
+	padding: 0px;
+	border: none;
+}
+
+
 
 
 
@@ -99,6 +151,7 @@ button {
   width: 30%;
   height: 100%;
   padding-top: 360px;
+  border: 1px;
 }
 .img:before {
   content: '';

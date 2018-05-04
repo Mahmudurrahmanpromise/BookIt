@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 #from mysql.connector import MySQLConnection, Error
 import MySQLdb
 import sys
@@ -8,41 +8,318 @@ import io
 import pymysql
 import os
 from werkzeug.utils import secure_filename
+from datetime import datetime
 
 
 app = Flask(__name__)
+app.secret_key = os.urandom(24)
 
 conn = MySQLdb.connect(host="localhost", user="root", password="allahpleasehelpme", db="bookit_db")
 
 
 
+@app.route("/")
+def index():
+    return render_template("index.html", title="SignUP")
+
+
+############################Promise Vai####################################################
+
+@app.route("/checker", methods=["POST"])
+def checker():
+    admin_email = str(request.form["email"])
+    admin_password = str(request.form["password"])
+
+    cursor = conn.cursor()
+    cursor.execute("SELECT password FROM admin_login WHERE email LIKE %s", (admin_email,))
+    fetch_password = cursor.fetchone()
+    print(fetch_password[0])
+
+    y = fetch_password[0]
+    print(y)
+
+
+    if (admin_password == y):
+
+        return redirect(url_for("posts"))
+    else:
+
+        return redirect(url_for("loginerror"))
+
+
+@app.route("/checkuser", methods=["POST"])
+def checkuser():
+    user_email = str(request.form["email"])
+    password = str(request.form["password"])
+
+    cursor = conn.cursor()
+    cursor.execute("SELECT password FROM user WHERE email LIKE %s", (user_email,))
+    user_password = cursor.fetchone()
+
+    if user_password is None:
+        flash("This gmail is not Found!")
+        return redirect(url_for("index"))
+
+    print(user_password[0])
+    x = user_password[0]
 
 
 
-@app.route("/",methods=["POST","GET"])
+    if (password == x):
+
+        session['user_email'] = user_email
+
+        return redirect(url_for("user_posts"))
+    else:
+
+        return redirect(url_for("loginerror"))
 
 
+@app.route("/approve/<string:name>/")
+def approve(name=None):
+    cursor = conn.cursor()
+    name = str(name)
+    cursor.execute("UPDATE post SET APPROVED =1 WHERE book_name = \"" + name + "\"")
+    books = cursor.fetchall()
 
-def read_blob():
+    cursor.close()
+    conn.commit()
 
-        myname = "nowrinneetu95@gmail.com"
+    return str(books)
+
+
+@app.route("/user_posts")
+def user_posts():
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM post")
+    books = cursor.fetchall()
+
+    cursor.close()
+    conn.commit()
+
+    return render_template("user_posts.html", **locals())
+
+
+@app.route("/post-entry/", methods=["POST"])
+def post_entry():
+    if request.method == 'POST':
+        # data = request.form.to_dict()
+        ################
+
+        user_email = session['user_email']
+
+        book_name = str(request.form["bookname"])
+        writer_name = str(request.form["author"])
+        category = str(request.form["category"])
+        book_photo = request.files["book_image"]
+        for_sell_rent = str(request.form["for_sell_rent"])
+        #price = request.form["price"]
+        book_photo.filename = user_email + book_name + writer_name + ".png"  # some custom file name that you want
+
+        ################
+
+        UPLOAD_FOLDER = 'static/book_images'
+        ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
+        app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+        photo_name = book_photo.filename
+        book_photo.save(os.path.join(app.config['UPLOAD_FOLDER'], photo_name))
+
+        book_image_path = "/static/book_images/" + photo_name
         cursor = conn.cursor()
-        cursor.execute("SELECT username,location,user_image FROM user WHERE email LIKE %s",(myname,))
+
+        cursor.execute(
+            "INSERT INTO post (user_email,book_name,writer_name,category,book_image_path)VALUES(%s,%s,%s,%s,%s)",
+            (user_email, book_name, writer_name, category, book_image_path))
+
+        ###################
+        ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
+        conn.commit()
+
+        return redirect(url_for("posts"))
+
+
+@app.route("/posts")
+def posts():
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM post")
+    books = cursor.fetchall()
+
+    cursor.close()
+    conn.commit()
+
+    return render_template("posts.html", **locals())
+
+
+@app.route("/loginerror")
+def loginerror():
+    return render_template("loginerror.html")
+
+
+@app.route("/logout")
+def logout():
+    return render_template("logout.html")
+
+
+@app.route("/dashboard", methods=['GET', 'POST'])
+def dashboard():
+    if request.method == 'POST':
+        bookname = str(request.form["book_name"])
+
+        APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+        target = os.path.join(APP_ROOT, 'static/book_pdf/')
+        print(target)
+        print(request.files.getlist("file"))
+        for upload in request.files.getlist("file"):
+            print(upload)
+            print("{} is the file name".format(upload.filename))
+            filename = upload.filename
+            destination = "/".join([target, filename])
+
+            upload.save(destination)
+            pdf_path = "/static/book_pdf/" + filename
+
+            cursor = conn.cursor()
+
+            cursor.execute("INSERT INTO book_db (name,link)VALUES(%s,%s)",
+                           (bookname, pdf_path))
+            conn.commit()
+
+    return render_template("dashboard.html")
+
+
+###############################################################################################
+
+
+
+
+##################################### Marzan #########################################################################
+
+
+@app.route("/read_pdf")
+def read_pdf():
+    cursor=conn.cursor()
+    cursor.execute("SELECT * FROM book_db")
+    bookList=cursor.fetchall()
+    return  render_template("bookit_read_pdf.html",bookList=bookList)
+
+@app.route("/all_books",methods=['GET','POST'])
+def book():
+    cursor=conn.cursor()
+    cursor.execute("SELECT * FROM book_db")
+    bookList=cursor.fetchall()
+    return  render_template("all_books.html",bookList=bookList)
+
+@app.route("/bookit_category_template",methods=['GET','POST'])
+def bookit_category_template():
+
+    category = request.args.get('cat')
+    cursor=conn.cursor()
+    cursor.execute("SELECT * FROM book_db WHERE category=%s",(category,))
+    bookList=cursor.fetchall()
+    return  render_template("bookit_category_template.html",bookList=bookList)
+
+@app.route("/bookit_writer_template",methods=['GET','POST'])
+def bookit_writer_template():
+
+    writer = request.args.get('writer')
+    cursor=conn.cursor()
+    cursor.execute("SELECT * FROM book_db WHERE author=%s",(writer,))
+    bookList=cursor.fetchall()
+    return  render_template("bookit_writer_template.html",bookList=bookList)
+
+
+
+@app.route("/buy_book",methods=['GET','POST'])
+def buy_book():
+    cursor=conn.cursor()
+    cursor.execute("SELECT * FROM book_db")
+    bookList=cursor.fetchall()
+    return  render_template("buy_book.html",bookList=bookList)
+
+@app.route("/buy_category_template",methods=['GET','POST'])
+def buy_category_template():
+
+    category = request.args.get('cat')
+    cursor=conn.cursor()
+    cursor.execute("SELECT * FROM book_db WHERE category=%s",(category,))
+    bookList=cursor.fetchall()
+    return  render_template("buy_category_template.html",bookList=bookList)
+
+@app.route("/buy_writer_template",methods=['GET','POST'])
+def buy_writer_template():
+
+    writer = request.args.get('writer')
+    cursor=conn.cursor()
+    cursor.execute("SELECT * FROM book_db WHERE author=%s",(writer,))
+    bookList=cursor.fetchall()
+    return  render_template("buy_writer_template.html",bookList=bookList)
+
+
+@app.route("/bookit_subpage",methods=['GET', 'POST'])
+def bookit_subpage():
+
+    bookID= request.args.get('id')
+    user_email = session['user_email']
+
+    cursor=conn.cursor()
+    cursor.execute("SELECT * FROM book_db WHERE ID=%s",(bookID,))
+    bookList=cursor.fetchall()
+
+    #book_name = bookList[0][1]
+    #print (book_name)
+    date = datetime.now()
+
+
+    if request.method == "POST":
+        q= request.form['quantity']
+        print(q)
+
+
+        cursor = conn.cursor()
+        cursor.execute(
+            "INSERT INTO notification_table (bookID,user_email,quantity,date)VALUES (%s,%s,%s,%s)",
+            (bookID, user_email,q,date))
+
+        conn.commit()
+
+
+
+    return  render_template("bookit_subpage.html",bookList=bookList)
+
+
+
+
+
+@app.route("/user_profile",methods=["POST","GET"])
+
+
+
+def user_profile():
+
+        myname = session['user_email']
+
+        cursor = conn.cursor()
+        cursor.execute("SELECT username,location,user_image,email FROM user WHERE email LIKE %s",(myname,))
         info = cursor.fetchone()
         username = info[0]
         location = info[1]
         user_image = info[2]
 
+        #print (info[2])
+
         if request.method == "POST":
 
 
-            user_email = "nowri@gmail.com"
+            user_email = session['user_email']
+
             book_name = str(request.form["book_name"])
             writer_name = str(request.form["writer_name"])
             category = str(request.form["category"])
             book_photo = request.files["book_image"]
             for_sell_rent = str(request.form["for_sell_rent"])
-            price = request.form["book_price"]
+            price= str(request.form["book_price"])
+
             book_photo.filename = user_email+book_name+writer_name+".png"  # some custom file name that you want
 
 
@@ -58,8 +335,8 @@ def read_blob():
                 book_image_path = "/static/rent_book_photo/"+photo_name
 
 
-                cursor.execute("INSERT INTO rent_book (user_email,book_name,writer_name,category,book_image_path)VALUES(%s,%s,%s,%s,%s)",
-                                         (user_email, book_name, writer_name, category,book_image_path))
+                cursor.execute("INSERT INTO rent_book (user_email,book_name,writer_name,category,book_image_path,rent_price)VALUES(%s,%s,%s,%s,%s,%s)",
+                                         (user_email, book_name, writer_name, category,book_image_path,price))
 
 
             if for_sell_rent=="Add book for sell" :
@@ -74,22 +351,22 @@ def read_blob():
                 book_image_path = "/static/sell_book_photo/"+photo_name
 
 
-                cursor.execute("INSERT INTO sell_book (user_email,book_name,writer_name,category,book_image_path)VALUES(%s,%s,%s,%s,%s)",
-                                         (user_email, book_name, writer_name, category,book_image_path))
+                cursor.execute("INSERT INTO sell_book (user_email,book_name,writer_name,category,book_image_path,sell_price)VALUES(%s,%s,%s,%s,%s,%s)",
+                                         (user_email, book_name, writer_name, category,book_image_path,price))
 
 
 
         cursor.close()
         conn.commit()
 
-        return render_template('user_profile.html', username=username ,location=location)
+        return render_template('user_profile.html', info = info)
 
 
 @app.route("/edit_profile", methods=["GET","POST"])
 def edit_profile():
 
     if request.method == "POST" :
-        user_email = 'nowrinneetu95@gmail.com'
+        user_email = session['user_email']
         change_username = str(request.form["change_username"])
         change_password = str(request.form["change_password"])
         change_location = str(request.form["change_location"])
@@ -118,17 +395,66 @@ def edit_profile():
                WHERE email=%s
             """, (change_location, user_email))
 
+        print(change_username)
+
+        return redirect(url_for("user_profile"))
 
         conn.commit()
         conn.close()
 
-
         #cursor1.execute(" UPDATE user SET username=%s WHERE email='%s' " % (change_username,user_email))
 
-        print(change_username)
 
         #return redirect(url_for())
 
+
+
+    return render_template("edit_profile.html")
+
+@app.route("/change_pro_pic", methods=["GET","POST"])
+
+def change_pro_pic():
+
+    if request.method == "POST":
+
+        user_email = session['user_email']
+
+        dp = request.files["pro_image"]
+
+        cursor = conn.cursor()
+        cursor.execute("SELECT user_image FROM user WHERE email LIKE %s", (user_email,))
+        user_image = cursor.fetchone()
+
+        dp.filename = user_email + ".png"  # some custom file name that you want
+
+        dpname = dp.filename
+
+        UPLOAD_FOLDER = 'static/user_images'
+        ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
+        app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+        #print (dpname)
+
+        if user_image[0] is not None:
+
+            path = "static/user_images/" + dpname
+            os.remove(path)
+
+        dp.save(os.path.join(app.config['UPLOAD_FOLDER'], dpname))
+
+        dp_image_path = "/static/user_images/" + dpname
+
+        cursor.execute("""
+                       UPDATE user
+                       SET user_image=%s
+                       WHERE email=%s
+                    """, (dp_image_path, user_email))
+
+        #else :
+
+
+
+        return redirect(url_for("user_profile"))
 
 
     return render_template("edit_profile.html")
@@ -145,7 +471,8 @@ def edit_profile():
 
 def view_books():
 
-    myname = "nowri@gmail.com"
+    myname = session['user_email']
+
 
 
     cursor = conn.cursor()
@@ -213,6 +540,25 @@ def rent_book_category():
                    (category,))
     rent_book_info = cursor.fetchall()
 
+    if request.method == "POST":
+
+        #category = str(request.form["category"])
+        book_name = str(request.form["search_book"])
+        writer_name = str(request.form["search_writer"])
+        print(book_name)
+
+        if book_name:
+
+            cursor.execute("SELECT book_name,writer_name,book_image_path,category FROM rent_book WHERE book_name LIKE %s", (book_name,))
+            rent_book_info = cursor.fetchall()
+
+        if writer_name:
+            cursor.execute(
+                "SELECT book_name,writer_name,book_image_path,category FROM rent_book WHERE writer_name LIKE %s",
+                (writer_name,))
+            rent_book_info = cursor.fetchall()
+
+
 
 
 
@@ -229,17 +575,20 @@ def rent_book_owners():
 
 
 
+
+
     cursor = conn.cursor()
     cursor.execute("SELECT user_image,username,location,email,rent_price,book_image_path From user,rent_book WHERE email= user_email AND rent_book.book_name= %s",(book,))
-    owner = cursor.fetchall()
+    owners = cursor.fetchall()
 
     cursor.execute("SELECT  * FROM rent_book WHERE book_name LIKE %s",
                    (book,))
     book_info = cursor.fetchone()
     #owners = owner[0][0]
-    print(owner)
+    #print(owners)
+    #print (book_info)
 
-    return render_template("rent_book_owners.html",book_info= book_info,owners=owner)
+    return render_template("rent_book_owners.html",book_info= book_info,owners=owners)
 
 
 
@@ -263,8 +612,16 @@ def buy_from_user():
         writer_name = str(request.form["search_writer"])
         print(book_name)
 
-        cursor.execute("SELECT book_name,writer_name,book_image_path,rent_price FROM rent_book WHERE book_name LIKE %s", (book_name,))
-        rent_book_info = cursor.fetchall()
+        if book_name:
+
+            cursor.execute("SELECT book_name,writer_name,book_image_path,category FROM sell_book WHERE book_name LIKE %s", (book_name,))
+            sell_book_info = cursor.fetchall()
+
+        if writer_name:
+            cursor.execute(
+                "SELECT book_name,writer_name,book_image_path,category FROM sell_book WHERE writer_name LIKE %s",
+                (writer_name,))
+            sell_book_info = cursor.fetchall()
 
 
     return render_template("buy_from_user.html", sell_book_info=sell_book_info)
@@ -290,6 +647,26 @@ def buy_book_category():
     cursor.execute("SELECT book_name,writer_name,book_image_path,category FROM sell_book WHERE category LIKE %s",
                    (category,))
     sell_book_info = cursor.fetchall()
+
+
+    if request.method == "POST":
+
+        #category = str(request.form["category"])
+        book_name = str(request.form["search_book"])
+        writer_name = str(request.form["search_writer"])
+        print(book_name)
+
+        if book_name:
+
+            cursor.execute("SELECT book_name,writer_name,book_image_path,category FROM sell_book WHERE book_name LIKE %s", (book_name,))
+            sell_book_info = cursor.fetchall()
+
+        if writer_name:
+            cursor.execute(
+                "SELECT book_name,writer_name,book_image_path,category FROM sell_book WHERE writer_name LIKE %s",
+                (writer_name,))
+            sell_book_info = cursor.fetchall()
+
 
     return render_template("buy_book_category.html", sell_book_info=sell_book_info)
 

@@ -7,7 +7,10 @@
 <meta name="description" content="" />
 <!--link href="/static/rent_book.css" rel="stylesheet" type="text/css"-->
 
-<link rel="stylesheet" href="{{url_for('static',filename= 'rent_book.css')}}">
+{#<link rel="stylesheet" href="{{url_for('static',filename= 'rent_book.css')}}">#}
+
+<link rel="stylesheet" href="{{url_for('static',filename= 'css_read_pdf.css')}}"/>
+
 
 
 
@@ -17,11 +20,13 @@
 <div id="templatemo_container">
 	<div id="templatemo_menu">
     	<ul>
+             <li><a href="logout">Logout</a></li>
             <li><a href="rent_book">Rent Book</a></li>
             <li><a href="buy_from_user" class="current">Buy Book</a></li>
-            <li><a href="#" >Request Book</a></li>
-            <li><a href="#" >Profile</a></li>
-            <li><a href="#">Read Pdf</a></li>
+            <li><a href="buy_book">Request to buy</a></li>
+            <li><a href="read_pdf">Read Pdf</a></li>
+            <li><a href="user_profile">Profile</a></li>
+            <li><a href="user_posts">Home</a></li>
 
     	</ul>
     </div> <!-- end of menu -->
@@ -110,14 +115,13 @@
 
                 {% for each in sell_book_info %}
 
-                <div class="templatemo_product_box">
+                <div class="templatemo_buy_product_box">
+                   <h1>{{each[0]}}<span>(by {{each[1]}})</span></h1>
 
 
-                   <img src="{{each[2]}}"  class="img" height="200px" width="180px"/>
+                   <img src="{{each[2]}}"  height="150px" width="110px"/>
 
                     <div class="product_info">
-                        Book Name: {{each[0]}}<br/>
-                        Writer Name: {{each[1]}}<br/>
                         Category: {{each[3]}}
 
                         <a href="buy_book_owners?book={{each[0]}}">Owners</a>

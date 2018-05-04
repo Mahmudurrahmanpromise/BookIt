@@ -7,7 +7,9 @@
 <meta name="description" content="" />
 <!--link href="/static/rent_book.css" rel="stylesheet" type="text/css"-->
 
-<link rel="stylesheet" href="{{url_for('static',filename= 'rent_book.css')}}">
+{#<link rel="stylesheet" href="{{url_for('static',filename= 'rent_book.css')}}">#}
+
+<link rel="stylesheet" href="{{url_for('static',filename= 'css_read_pdf.css')}}"/>
 
 
 
@@ -17,11 +19,13 @@
 <div id="templatemo_container">
 	<div id="templatemo_menu">
     	<ul>
+            <li><a href="logout">Logout</a></li>
             <li><a href="rent_book" class="current">Rent Book</a></li>
             <li><a href="buy_from_user" >Buy Book</a></li>
-            <li><a href="#" >Request Book</a></li>
-            <li><a href="#" >Profile</a></li>
-            <li><a href="#">Read Pdf</a></li>
+            <li><a href="buy_book" >Request to buy</a></li>
+            <li><a href="read_pdf">Read Pdf</a></li>
+            <li><a href="user_profile">Profile</a></li>
+            <li><a href="user_posts">Home</a></li>
 
     	</ul>
     </div> <!-- end of menu -->
@@ -110,23 +114,26 @@
 
                 {% for each in rent_book_info %}
 
-                <div class="templatemo_product_box">
+                <div class="templatemo_buy_product_box">
+                   <h1>{{each[0]}}<span>(by {{each[1]}})</span></h1>
 
 
-                   <img src="{{each[2]}}"  class="img" height="200px" width="180px"/>
+
+                   <img src="{{each[2]}}"  height="150px" width="110px"/>
 
                     <div class="product_info">
-                        Book Name: {{each[0]}}<br/>
-                        Writer Name: {{each[1]}}<br/>
-                        category: {{each[3]}}</br>
-                        <a href="rent_book_owners?book={{each[0]}}">Owners</a>
+{#                        Book Name: {{each[0]}}<br/>#}
+{#                        Writer Name: {{each[1]}}<br/>#}
+                        <p>{{each[3]}}</p>
 
-                        <!--Rent Prize<h3>{{each[3]}}</h3-->
+
+                       <div class="Buy_book"><a href="rent_book_owners?book={{each[0]}}">Owners</a></div>
                     </div>
+                    <div class="cleaner">&nbsp;</div>
 
 
                 </div>
-                <!--<div class="cleaner_with_height">&nbsp;</div>-->
+                <!--div class="cleaner_with_height">&nbsp;</div-->
 
 
                 {% endfor %}
@@ -143,7 +150,7 @@
 
 	       <a href="subpage.html">Home</a> | <a href="subpage.html">Search</a> | <a href="subpage.html">Books</a> | <a href="#">New Releases</a> | <a href="#">FAQs</a> | <a href="#">Contact Us</a><br />
         Copyright © CSEDU <a href="#"><strong>Your Company Name</strong></a>
-        <!-- Credit: www.templatemo.com -->	</div>
+        <!-- Credit: www.tempslatemo.com -->	</div>
     <!-- end of footer -->
 <!--  Free CSS Template www.templatemo.com -->
 </div> <!-- end of container -->

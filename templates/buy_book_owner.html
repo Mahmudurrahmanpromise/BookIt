@@ -17,11 +17,13 @@
 <div id="templatemo_container">
 	<div id="templatemo_menu">
     	<ul>
+            <li><a href="logout">Logout</a></li>
             <li><a href="rent_book">Rent Book</a></li>
-            <li><a href="buy_from_user" class="current">Buy Book</a></li>
-            <li><a href="#" >Request Book</a></li>
-            <li><a href="#" >Profile</a></li>
-            <li><a href="#">Read Pdf</a></li>
+            <li><a href="buy_from_user"  class="current" >Buy Book</a></li>
+            <li><a href="buy_book" >Request to buy</a></li>
+            <li><a href="read_pdf">Read Pdf</a></li>
+            <li><a href="user_profile">Profile</a></li>
+            <li><a href="user_posts">Home</a></li>
 
     	</ul>
     </div> <!-- end of menu -->
@@ -130,7 +132,7 @@
             <p>{{each[1]}}</p>
             <p>{{each[2]}}</p>
             <p>{{each[3]}}</p>
-            Rent Price: {{each[4]}}<br/>
+            Sell Price: {{each[4]}}<br/>
             <br/>
             <img src="{{each[5]}}"  class="img" height="180px" width="165px"/>
 

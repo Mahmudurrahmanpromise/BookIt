@@ -66,17 +66,23 @@ img {
 }
 
 .View_button a{
+	float: right;
+    margin-right: 10px;
+    margin-top: 5px;
 	clear: both;
 	text-align: center;
 	display: block;
-	width: 100px;
-	padding: 4px 0 5px 0;
-	margin-bottom: 10px; 
+	width: 100%;
+	padding: 4px 0px 5px 0;
+	margin-bottom: 10px;
+	margin-left: 100px;
+
+
 	/*background: url(images/templatemo_btn_01.jpg) no-repeat;*/
-	background-color: #006600;
+	background-color: #996633;
 	color: #ffffff;
 	font-weight: bold;
-	text-decoration: none;
+	text-decoration: none
 }
 
 
@@ -88,9 +94,12 @@ img {
 	clear: both;
 	text-align: center;
 	display: block;
-	width: 100px;
-	padding: 4px 0 5px 0;
+	width: 200px;
+	padding: 4px 0px 5px 0;
 	margin-bottom: 10px;
+	margin-left: 100px;
+
+
 	/*background: url(images/templatemo_btn_01.jpg) no-repeat;*/
 	background-color: #996633;
 	color: #ffffff;
@@ -228,7 +237,7 @@ img {
 }
 
 .templatemo_content_left_section ul li{
-	padding: 0 0 3px 10px;	
+	padding: 0 0 3px 10px;
 	list-style: none;
 }
 
@@ -354,5 +363,4 @@ img {
 }
 
 /* end of footer */
-
 
