@@ -355,6 +355,19 @@ img {
     font-size: 20px;
 }
 
+.templatemo_owner_box .owner_info{
+
+	width: 40%;
+	float: left;
+}
+
+.templatemo_owner_box .book_image{
+
+	width: 30%;
+	float: right;
+	margin-left:10px
+}
+
 /* end of content */
 
 /* footer */

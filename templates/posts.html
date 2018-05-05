@@ -17,18 +17,20 @@
         var w = "165px";
         for(var i=0;i<books.length;i++){
 
-            console.log(books[i][4]);
-
-           if(!books[i][5]){
-                books[i][5]= "Not Decided"
-            }
-
-            temp+=" <div id=\"books\" class=\"templatemo_owner_box\"> Book Name: "+books[i][1]
-                + "<br/>Author: " +books[i][2]+"<br/>Category:"+books[i][6]+"<br/>"+books[i][3]+"<br/>Price : "+books[i][5]+"<br/><br/><img src=\"" +books[i][4]+"\" height=\""+h+"\" width=\""+w+"\">"+"<br/>"+"<br/></div><div class=\"cleaner_with_height\">&nbsp;</div>\n" +
-                "                ";
+            {#console.log(books[i][4]);#}
+{##}
+{#           if(!books[i][5]){#}
+{#                books[i][5]= "Not Decided"#}
+{#            }#}
+            {#+"<br/>"#}
+            {#    "<br/>"+books[i][9]+#}
+{##}
+{#            temp+=" <div id=\"books\" class=\"templatemo_owner_box\">"+books[i][8]+books[i][9]+"<br/> Book Name: "+books[i][1]#}
+{#                + "<br/>Author: " +books[i][2]+"<br/>Category:"+books[i][6]+"<br/>"+books[i][3]+"<br/>Price : "+books[i][5]+"<br/><br/><img src=\"" +books[i][4]+"\" height=\""+h+"\" width=\""+w+"\">"+"<br/>"+"<br/></div><div class=\"cleaner_with_height\">&nbsp;</div>\n" +#}
+{#                "                ";#}
 
         }
-        document.getElementById("books").innerHTML=temp;
+        {#document.getElementById("books").innerHTML=temp;#}
     }
 </script>
 
@@ -72,6 +74,8 @@
             <li><a href="buy_book">Request to buy</a></li>
             <li><a href="read_pdf">Read Pdf</a></li>
             <li><a href="user_profile">Profile</a></li>
+            <li><a href="dashboard" class="current">Dashboard</a></li>
+
             <li><a href="user_posts" class="current">Home</a></li>
 
     	</ul>
@@ -83,7 +87,42 @@
     <div id="templatemo_content">
 
         <div id="templatemo_content_left">
-            <div id="books"></div>
+            {% for each in books %}
+
+            <div class="templatemo_owner_box">
+            <div class="owner_info">
+
+                 <p>{{each[8]}}</p>
+            <p>{{each[12]}}</p>
+            <p>{{each[9]}}</p>
+
+
+            <p>Book : {{each[1]}}</p>
+            <p>Author : {{each[2]}}</p>
+            <p>Category : {{ each[6] }}</p>
+            <p>{{each[3]}}</p>
+            Rent Price: {{each[5]}}<br/>
+                <br/>
+
+
+
+
+            </div >
+
+
+                <div class="book_image">
+                    <img src="{{each[4]}}"  class="img" height="180px" width="165px"/>
+
+
+                </div>
+
+
+            </div>
+            <div class="cleaner_with_height">&nbsp;</div>
+
+            {% endfor %}
+
+
 
         </div> <!-- end of content left -->
 

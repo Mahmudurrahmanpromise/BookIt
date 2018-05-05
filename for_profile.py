@@ -41,7 +41,7 @@ def checker():
 
     if (admin_password == y):
 
-        return redirect(url_for("posts"))
+        return redirect(url_for("dashboard"))
     else:
 
         return redirect(url_for("loginerror"))
@@ -91,16 +91,18 @@ def approve(name=None):
 @app.route("/user_posts")
 def user_posts():
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM post")
+    cursor.execute("SELECT * FROM post,user WHERE post.user_email = user.email")
     books = cursor.fetchall()
+
+    print (books)
 
     cursor.close()
     conn.commit()
 
-    return render_template("user_posts.html", **locals())
+    return render_template("user_posts.html", books = books)
 
 
-@app.route("/post-entry/", methods=["POST"])
+@app.route("/post_entry", methods=["GET","POST"])
 def post_entry():
     if request.method == 'POST':
         # data = request.form.to_dict()
@@ -149,10 +151,10 @@ def post_entry():
         ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
         conn.commit()
 
-        return redirect(url_for("posts"))
+        return redirect(url_for("user_posts"))
 
 
-@app.route("/posts")
+@app.route("/posts", methods=['GET','POST'])
 def posts():
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM post")
@@ -160,6 +162,9 @@ def posts():
 
     cursor.close()
     conn.commit()
+
+    if(request.method=="POST"):
+        return redirect(url_for("user_posts"))
 
     return render_template("posts.html", **locals())
 
@@ -175,13 +180,18 @@ def logout():
     return render_template("logout.html")
 
 
-@app.route("/dashboard", methods=['GET', 'POST'])
+@app.route("/dashboard",methods=['GET','POST'])
 def dashboard():
+
     if request.method == 'POST':
         bookname = str(request.form["book_name"])
+        author = str(request.form["writer_name"])
+
+        if author is None:
+            author = "Not given"
 
         APP_ROOT = os.path.dirname(os.path.abspath(__file__))
-        target = os.path.join(APP_ROOT, 'static/book_pdf/')
+        target = os.path.join(APP_ROOT, 'static/pdf_books/')
         print(target)
         print(request.files.getlist("file"))
         for upload in request.files.getlist("file"):
@@ -191,16 +201,24 @@ def dashboard():
             destination = "/".join([target, filename])
 
             upload.save(destination)
-            pdf_path = "/static/book_pdf/" + filename
+            pdf_path = "static/pdf_books/" + filename
+
+            print (pdf_path)
 
             cursor = conn.cursor()
 
-            cursor.execute("INSERT INTO book_db (name,link)VALUES(%s,%s)",
-                           (bookname, pdf_path))
+            cursor.execute("INSERT INTO book_db (name,link,author)VALUES(%s,%s,%s)",
+                       (bookname,pdf_path,author))
             conn.commit()
 
-    return render_template("dashboard.html")
+    cursor = conn.cursor()
+    cursor.execute("SELECT name, author FROM notification_table NATURAL JOIN book_db WHERE book_db.ID = notification_table.request_id")
+    books = cursor.fetchall()
 
+    cursor.close()
+    conn.commit()
+
+    return render_template("dashboard.html", **locals())
 
 ###############################################################################################
 
@@ -296,6 +314,7 @@ def bookit_subpage():
             (bookID, user_email,q,date))
 
         conn.commit()
+        return redirect(url_for("buy_book"))
 
 
 
